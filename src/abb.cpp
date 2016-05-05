@@ -226,6 +226,18 @@ int ABB::mediana()
 }
 
 
+bool ABB::ehCompleta(){
+	return false;
+}
+
+bool ABB::ehCheia(){
+	float valorTeste=pow(2,this->height)-1;
+	if(valorTeste==this->size)
+		return true;
+	return false;
+}
+
+
 void ABB::print()
 {
 	if(this->root == nullptr){
@@ -255,8 +267,6 @@ void ABB::print()
 		}
 	}
 }
-
-
 
 
 

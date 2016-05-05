@@ -39,6 +39,12 @@ class ABB
 		int mediana();
 
 		void print(); //depuracao
+
+		bool ehCompleta();
+
+		bool ehCheia();
+
+		
 };
 
 #endif
