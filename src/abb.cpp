@@ -5,6 +5,8 @@
 
 ABB::ABB()
 {
+	this->size=0;
+	this->height=0;
 	this->root = nullptr;
 }
 
@@ -266,13 +268,11 @@ bool ABB::ehCheia(){
 
 bool ABB::remove(int key)
 {
-	std::cout<<"DEBUGGING>>>>>>>>";
 	if(this->root == nullptr)
  		return false;
  	else{
 		int f=0;
  		Node* pt = search_aux(key, &f);
- 		
  		if(f!=1)
 			std::cout<<"Elemento inexistente!"<<std::endl;
 		else{
@@ -294,12 +294,16 @@ bool ABB::remove(int key)
 				if(height < this->height)
 					this->height = height;
 				this->size--;	
+				if(pt!=this->root)
+					this->root=pt;
 				//
 				
 				if(ptRem->parent->left==ptRem)
 					pt->parent->left=nullptr;
 				else
 					pt->parent->right=nullptr;
+					
+				
 									
 				delete ptRem;
 				return true;
@@ -330,6 +334,8 @@ bool ABB::remove(int key)
 
 				if(height < this->height)
 					this->height = height;
+				if(pt!=this->root)
+					this->root=pt;
 				this->size--;
 				
 				delete pt;
@@ -344,10 +350,12 @@ bool ABB::remove(int key)
 					pt=pt->left;
 				
 				//Ligo o pai ao neto e o neto ao pai
-				if(ptRem->parent->left==ptRem)
-					ptRem->parent->left=pt;
-				else
-					ptRem->parent->right=pt;
+				if(ptRem->parent!=nullptr){
+					if(ptRem->parent->left==ptRem)
+						ptRem->parent->left=pt;
+					else
+						ptRem->parent->right=pt;
+				}
 				pt->parent=ptRem->parent;
 				
 				//updateRemoval
@@ -365,11 +373,13 @@ bool ABB::remove(int key)
 				if(height < this->height)
 					this->height = height;
 				this->size--;	
+				if(pt!=this->root)
+					this->root=pt;
 				//
 				
 
 				delete ptRem;
-				return true;				
+				return true;		
 			}
 			else{
 				std::cout<<"ERRO NA REMOÇÃO"<<std::endl;
@@ -380,27 +390,32 @@ bool ABB::remove(int key)
 }
 
 std::string ABB::toString(){
+	std::string buff("");
 	if(this->root == nullptr)
-		std::cout << "{ }";
+		return "{ }";
 	
 	std::queue <Node*> fila;
 	Node* pt = this->root;
 	fila.push(pt);
 	
+	buff+="{";
 	while(!fila.empty()){
 		Node* aux = fila.front();
 		fila.pop();
 		
-		std::cout << "{"<<aux<<",";
+		buff+=std::to_string(aux->key);
 
 		if(aux->left != nullptr)
 			fila.push(aux->left);
 					
 		if(aux->right != nullptr)
 			fila.push(aux->right);
+			
+		if(!fila.empty())
+			buff+=",";
 	}
 	
-	std::cout<<"}"<<std::endl;
-	return " ";
+	buff+="}\n";
+	return buff;
 }
 
