@@ -309,7 +309,7 @@ bool ABB::remove(int key)
 				return true;
 			}else if(pt->left!=nullptr && pt->right!=nullptr){
 				Node* ptAux=pt;	//Não será alterado
-				
+				std::cout<<"SAASAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA____________________________________________________________________";
 				/*-- Achando maior elemento */
 				pt=pt->left;
 				while(pt->right!=nullptr){
