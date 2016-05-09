@@ -226,18 +226,6 @@ int ABB::mediana()
 }
 
 
-bool ABB::ehCompleta(){
-	return false;
-}
-
-bool ABB::ehCheia(){
-	float valorTeste=pow(2,this->height)-1;
-	if(valorTeste==this->size)
-		return true;
-	return false;
-}
-
-
 void ABB::print()
 {
 	if(this->root == nullptr){
@@ -268,12 +256,151 @@ void ABB::print()
 	}
 }
 
+bool ABB::ehCheia(){
+	float valorTeste=pow(2,this->height)-1;
+	if(valorTeste==this->size)
+		return true;
+	return false;
+}
 
 
-// bool remove(int key)
-// {
-// 	if(this->root == nullptr)
-// 		return false;
-// 	else
-// 		return remove_aux()
-// }
+bool ABB::remove(int key)
+{
+	std::cout<<"DEBUGGING>>>>>>>>";
+	if(this->root == nullptr)
+ 		return false;
+ 	else{
+		int f=0;
+ 		Node* pt = search_aux(key, &f);
+ 		
+ 		if(f!=1)
+			std::cout<<"Elemento inexistente!"<<std::endl;
+		else{
+			if(pt->right==nullptr && pt->left==nullptr){	//folha
+				Node* ptRem=pt;
+				
+				//updateRemoval
+				int height = 1;
+				while(pt->parent != nullptr){
+					if(pt->parent->left == pt)
+						pt->parent->leftSize--;
+					else
+						pt->parent->rightSize--;
+
+					pt = pt->parent;
+					height++;
+				}
+
+				if(height < this->height)
+					this->height = height;
+				this->size--;	
+				//
+				
+				if(ptRem->parent->left==ptRem)
+					pt->parent->left=nullptr;
+				else
+					pt->parent->right=nullptr;
+									
+				delete ptRem;
+				return true;
+			}else if(pt->left!=nullptr && pt->right!=nullptr){
+				Node* ptAux=pt;	//Não será alterado
+				
+				/*-- Achando maior elemento */
+				pt=pt->left;
+				while(pt->right!=nullptr){
+					pt=pt->right;
+				}
+				//Faz o pai apontar pra nulo e troca o valor pelo do maior elemento
+				pt->parent->right=nullptr;
+				ptAux->key=pt->key;
+				
+
+				//updateRemoval
+				int height = 1;
+				while(pt->parent != nullptr){
+					if(pt->parent->left == pt)
+						pt->parent->leftSize--;
+					else
+						pt->parent->rightSize--;
+
+					pt = pt->parent;
+					height++;
+				}
+
+				if(height < this->height)
+					this->height = height;
+				this->size--;
+				
+				delete pt;
+				return true;
+			}else if(pt->left==nullptr||pt->right==nullptr){
+				Node* ptRem=pt;	//Não será alterado
+				
+				//Selecionando o elento com subárvore nula
+				if(pt->left==nullptr)
+					pt=pt->right;
+				else
+					pt=pt->left;
+				
+				//Ligo o pai ao neto e o neto ao pai
+				if(ptRem->parent->left==ptRem)
+					ptRem->parent->left=pt;
+				else
+					ptRem->parent->right=pt;
+				pt->parent=ptRem->parent;
+				
+				//updateRemoval
+				int height = 1;
+				while(pt->parent != nullptr){
+					if(pt->parent->left == pt)
+						pt->parent->leftSize--;
+					else
+						pt->parent->rightSize--;
+
+					pt = pt->parent;
+					height++;
+				}
+
+				if(height < this->height)
+					this->height = height;
+				this->size--;	
+				//
+				
+
+				delete ptRem;
+				return true;				
+			}
+			else{
+				std::cout<<"ERRO NA REMOÇÃO"<<std::endl;
+				return false;
+			}
+		}
+	}return false;
+}
+
+std::string ABB::toString(){
+	if(this->root == nullptr)
+		std::cout << "{ }";
+	
+	std::queue <Node*> fila;
+	Node* pt = this->root;
+	fila.push(pt);
+	
+	while(!fila.empty()){
+		Node* aux = fila.front();
+		fila.pop();
+		
+		std::cout << "{"<<aux<<",";
+
+		if(aux->left != nullptr)
+			fila.push(aux->left);
+					
+		if(aux->right != nullptr)
+			fila.push(aux->right);
+	}
+	
+	std::cout<<"}"<<std::endl;
+	return " ";
+}
+

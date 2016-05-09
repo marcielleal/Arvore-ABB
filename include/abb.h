@@ -1,6 +1,6 @@
 #ifndef ABB_H_
 #define ABB_H_
-
+#include <iostream>
 class ABB
 {
 	public:
@@ -40,9 +40,17 @@ class ABB
 
 		void print(); //depuracao
 
-		bool ehCompleta();
-
 		bool ehCheia();
+		
+		std::string toString();
+		
+		int getSize(){
+			return this->size;
+			};
+		
+		int getHeight(){
+			return this->height;
+			};
 
 		
 };
