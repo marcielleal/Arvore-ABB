@@ -4,4 +4,4 @@
 make
 
 ####Para usar:
-
+./bin/main

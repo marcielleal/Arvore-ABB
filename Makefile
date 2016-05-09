@@ -1,5 +1,4 @@
 teste:
-	g++ -std=c++11 -Wall -I include/ src/abb.cpp src/testeABB.cpp -o bin/teste
-
+	g++ -std=c++11 -Wall -I include/ src/abb.cpp src/main.cpp -o bin/main
 clean:
-	rm bin/teste
+	rm bin/*.cpp
